@@ -47,11 +47,88 @@ from layoffs_staging2
 where row_num > 1;
 
 # query 8 - Delete Duplicate Rows
+SET SQL_SAFE_UPDATES = 0; #(Temporarily disable Safe Update Mode for this session:)
+delete 
+from layoffs_staging2
+where row_num > 1;
 
+# quey 9 - Remove Leading and Trailing Spaces Using TRIM()
+select distinct company
+from layoffs_staging2
+order by company;
 
+update layoffs_staging2
+set company = trim(company);
 
+select distinct company
+from layoffs_staging2
+order by company;
 
+# query 10 - Standardize the industry Column Using LIKE
+select distinct industry 
+from layoffs_staging2
+order by industry;
 
+update layoffs_staging2
+set industry = 'Crypto'
+where industry like 'Crypto%';
 
+#query 11 - Remove the Trailing Period (.) from the country Column
+select distinct country 
+from layoffs_staging2
+order by country;
 
+update layoffs_staging2
+set country = trim(trailing '.' from country);
 
+# query 12 - Find Blank and NULL Values in the industry Column
+select *
+from layoffs_staging2
+where industry is null
+or industry = '';
+
+#query 13 - Fill Missing industry Values Using a Self Join
+select t1.industry,t2.industry, t1.company
+from layoffs_staging2 as t1
+join layoffs_staging2 as t2 	
+	on t1.company = t2.company
+    and t1.location = t2.location
+where (t1.industry is null or t1.industry = '')
+and t2.industry is not null;
+
+update layoffs_staging2
+set industry = null
+where industry = '';
+
+update layoffs_staging2 as t1
+join layoffs_staging2 as t2 	
+	on t1.company = t2.company
+set t1.industry = t2.industry
+where t1.industry is null 
+and t2.industry is not null;
+
+# query 14 - Remove Rows Where Both total_laid_off and percentage_laid_off are NULL
+select * 
+from layoffs_staging2
+where (total_laid_off is null or total_laid_off = '')
+and (percentage_laid_off is null or percentage_laid_off = '');
+
+delete  
+from layoffs_staging2
+where (total_laid_off is null or total_laid_off = '')
+and (percentage_laid_off is null or percentage_laid_off = '');
+
+# query 15 - Convert the Text to a Date
+select `date`
+from layoffs_staging2;
+
+update layoffs_staging2
+set `date` = str_to_date(`date`,'%m/%d/%Y');
+
+alter table layoffs_staging2
+modify column `date` DATE;
+
+#query 16 - Drop the row_num Column
+
+alter table layoffs_staging2
+drop column row_num;
