@@ -73,3 +73,48 @@ FROM layoffs_staging2
 GROUP BY stage
 ORDER BY 2 DESC;
 
+# Query 12 — Find the Total Number of Employees Laid Off Each Month
+SELECT 
+substring(`date`,1,7) as month,
+# DATE_FORMAT(date,'%Y-%m') AS month, (this also works)
+sum(total_laid_off) as total_laidoff
+from layoffs_staging2
+group by month 
+order by month;
+
+# Query 13 — Calculate the Rolling Total (Running Total) of Layoffs by Month
+with rolling_total as (SELECT 
+substring(`date`,1,7) as month,
+sum(total_laid_off) as total_laidoff
+from layoffs_staging2
+group by month )
+select month , total_laidoff,
+sum(total_laidoff) over(order by month) as roll_total
+from rolling_total;
+
+# Query 14 — Rank Companies by Layoffs Within Each Year (Using DENSE_RANK() and PARTITION BY)
+WITH company_year AS
+(
+    SELECT
+        company,
+        YEAR(`date`) AS years,
+        SUM(total_laid_off) AS total_laid_off
+    FROM layoffs_staging2
+    GROUP BY company, YEAR(`date`)
+),
+company_year_rank AS
+(
+    SELECT
+        *,
+        DENSE_RANK() OVER(
+            PARTITION BY years
+            ORDER BY total_laid_off DESC
+        ) AS ranking
+    FROM company_year
+    WHERE years IS NOT NULL
+)
+
+SELECT *
+FROM company_year_rank
+WHERE ranking <= 5;
+
