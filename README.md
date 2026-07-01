@@ -1,214 +1,262 @@
-# SQL Data Cleaning Project – Layoffs Dataset
+# 📊 Global Layoffs Data Analysis Portfolio (SQL)
 
-## 📌 Project Overview
+> **End-to-End SQL Project:** Data Cleaning → Exploratory Data Analysis (EDA) → Business Insights
 
-This project demonstrates a complete SQL-based data cleaning workflow using a real-world layoffs dataset. The objective is to transform raw, inconsistent data into a clean, analysis-ready dataset by applying industry-standard SQL techniques commonly used by Data Analysts and Data Engineers.
+## 📌 Overview
 
-The project follows a structured data cleaning pipeline similar to those used in production environments, ensuring data quality, consistency, and reliability before performing exploratory data analysis (EDA) or building dashboards.
+This repository showcases an end-to-end SQL project built on a real-world Global Layoffs dataset. It demonstrates the complete analytics workflow followed by Data Analysts in industry—from transforming raw data into a reliable dataset to extracting business insights that support decision-making.
+
+Instead of focusing only on writing SQL queries, this project emphasizes the entire analytical process:
+
+* Cleaning messy data
+* Improving data quality
+* Preparing production-ready datasets
+* Exploring business trends
+* Answering stakeholder questions
+* Generating actionable insights
+
+The project follows industry best practices commonly used by analytics teams in product-based companies and consulting organizations.
 
 ---
 
-## 🎯 Business Problem
+# 🎯 Business Objective
 
-Raw business data is rarely ready for analysis. It often contains:
+Organizations rely on accurate workforce data to understand market trends, evaluate business performance, and support strategic planning.
+
+However, raw datasets often contain:
 
 * Duplicate records
 * Missing values
-* Inconsistent text formatting
+* Inconsistent formatting
 * Incorrect data types
-* Unnecessary records
-* Temporary processing columns
+* Invalid records
 
-Poor-quality data leads to inaccurate reports, misleading dashboards, and incorrect business decisions.
+The objective of this project is to transform raw layoff data into a clean, analysis-ready dataset and use SQL to answer meaningful business questions such as:
 
-The goal of this project is to clean the dataset so that it can be confidently used for reporting, visualization, and business analysis.
-
----
-
-## 🛠️ Technologies Used
-
-* MySQL
-* SQL Window Functions
-* Common Table Expressions (CTEs)
-* Joins
-* Self Joins
-* Aggregate Functions
-* String Functions
-* Date Functions
-* Data Cleaning Techniques
+* Which companies experienced the largest layoffs?
+* Which industries were most affected?
+* Which countries saw the highest workforce reductions?
+* How have layoffs changed over time?
+* Which company stages were impacted the most?
+* Which organizations had the highest layoffs each year?
 
 ---
 
-## 📂 Project Workflow
+# 🏗 Project Workflow
 
-The project follows a real-world data cleaning pipeline:
+The project is divided into two major phases.
 
-### 1. Create a Staging Table
+## Phase 1 — Data Cleaning
 
-* Created a duplicate of the original dataset.
-* Preserved raw data by performing all transformations on a staging table.
+The raw dataset was cleaned using SQL to improve accuracy, consistency, and reliability before analysis.
 
-**Why?**
+### Data Cleaning Tasks
 
-Working on a staging table prevents accidental modification of the original data and follows industry best practices.
+* Created a staging table to preserve raw data
+* Removed duplicate records using Window Functions
+* Standardized inconsistent text values
+* Trimmed unnecessary spaces
+* Corrected inconsistent country and industry names
+* Filled missing values using Self Joins
+* Removed invalid records
+* Converted text dates into SQL DATE format
+* Removed temporary helper columns
 
----
-
-### 2. Remove Duplicate Records
-
-Used the `ROW_NUMBER()` window function to identify duplicate rows based on multiple business-related columns.
-
-**Techniques Used**
-
-* `ROW_NUMBER()`
-* `PARTITION BY`
-* Common Table Expressions (CTEs)
-* `DELETE`
-
-**Business Impact**
-
-Duplicate records can inflate business metrics, resulting in incorrect counts, totals, and trend analysis.
-
----
-
-### 3. Standardize Text Data
-
-Standardized inconsistent text values by:
-
-* Removing leading and trailing spaces
-* Normalizing industry names
-* Standardizing country names
-* Removing unnecessary characters
-
-**Functions Used**
-
-* `TRIM()`
-* `LIKE`
-* `UPDATE`
-
-**Business Impact**
-
-Standardized values ensure accurate grouping, filtering, and aggregation during analysis.
-
----
-
-### 4. Handle Missing Values
-
-Identified missing values and populated them using a self join wherever reliable information existed within the dataset.
-
-**Techniques Used**
-
-* Self Join
-* `UPDATE`
-* `IS NULL`
-* `IS NOT NULL`
-
-**Business Impact**
-
-Completing missing values improves data completeness without introducing incorrect assumptions.
-
----
-
-### 5. Remove Invalid Records
-
-Removed records where both:
-
-* `total_laid_off`
-* `percentage_laid_off`
-
-were missing.
-
-**Business Impact**
-
-Rows without meaningful business information add noise to the dataset and reduce analytical quality.
-
----
-
-### 6. Convert Data Types
-
-Converted the date column from text format into the SQL `DATE` data type.
-
-**Functions Used**
-
-* `STR_TO_DATE()`
-* `ALTER TABLE`
-* `MODIFY COLUMN`
-
-**Business Impact**
-
-Correct data types enable accurate filtering, sorting, trend analysis, and date-based reporting.
-
----
-
-### 7. Remove Temporary Columns
-
-Dropped helper columns created during the cleaning process to produce a final, production-ready dataset.
-
----
-
-## 💡 SQL Concepts Demonstrated
+### SQL Concepts Applied
 
 * SELECT
 * UPDATE
 * DELETE
 * ALTER TABLE
-* Window Functions
 * ROW_NUMBER()
+* PARTITION BY
 * CTEs
 * Self Join
 * INNER JOIN
 * String Functions
 * Date Functions
+
+---
+
+## Phase 2 — Exploratory Data Analysis (EDA)
+
+After cleaning the dataset, SQL was used to analyze workforce reduction trends across different business dimensions.
+
+### Business Questions Answered
+
+* Companies with the highest layoffs
+* Companies laying off 100% of employees
+* Industry-wise layoffs
+* Country-wise layoffs
+* Year-wise layoff trends
+* Funding stage comparison
+* Monthly layoff trends
+* Running total of layoffs
+* Top companies by layoffs each year
+
+### SQL Concepts Applied
+
+* GROUP BY
 * Aggregate Functions
-* Data Standardization
+* Date Functions
+* CTEs
+* Window Functions
+* SUM() OVER()
+* DENSE_RANK()
+* PARTITION BY
+
+---
+
+# 💼 Business Insights Generated
+
+The analysis identified:
+
+* Companies with the highest workforce reductions
+* Industries most affected by layoffs
+* Countries experiencing the greatest employment impact
+* Annual layoff trends across the dataset
+* Monthly changes in workforce reductions
+* Funding stages with the highest layoffs
+* Year-wise ranking of companies based on layoffs
+* Cumulative layoff trends using running totals
+
+These insights demonstrate how SQL can transform raw business data into meaningful information for decision-makers.
+
+---
+
+# 🛠 Technologies Used
+
+* MySQL
+* MySQL Workbench
+* SQL
+
+---
+
+# 🧠 SQL Skills Demonstrated
+
+### Data Cleaning
+
+* Duplicate Detection
 * Missing Value Handling
-* Duplicate Removal
+* Data Standardization
+* Data Validation
+* Data Transformation
+* Date Conversion
+
+### SQL Fundamentals
+
+* SELECT
+* WHERE
+* ORDER BY
+* GROUP BY
+* HAVING
+* LIMIT
+
+### Intermediate SQL
+
+* Aggregate Functions
+* String Functions
+* Date Functions
+* CASE Statements
+* Joins
+* Self Joins
+
+### Advanced SQL
+
+* Common Table Expressions (CTEs)
+* Window Functions
+* ROW_NUMBER()
+* DENSE_RANK()
+* SUM() OVER()
+* PARTITION BY
 
 ---
 
-## 📈 Key Learning Outcomes
+# 🎯 Skills Demonstrated
 
-Through this project, I learned how to:
+This project demonstrates the practical skills expected from an entry-level Data Analyst.
 
-* Design a structured data cleaning workflow
-* Preserve raw data using staging tables
-* Identify and remove duplicate records
-* Standardize inconsistent categorical data
-* Handle NULL and blank values appropriately
-* Populate missing values using self joins
-* Convert text-based dates into SQL DATE format
-* Prepare datasets for downstream analysis and visualization
-* Apply SQL best practices commonly used in real-world analytics projects
-
----
-
-## 🚀 Business Value
-
-Clean data is the foundation of every successful analytics project.
-
-By improving data quality, this project enables:
-
-* More accurate reporting
-* Reliable business insights
-* Better dashboard performance
-* Improved decision-making
-* Consistent analytical results
-
----
-
-## 🎯 Skills Demonstrated
+### Technical Skills
 
 * SQL Programming
 * Data Cleaning
-* Data Validation
+* Exploratory Data Analysis (EDA)
 * Data Transformation
-* Data Preparation
+* Window Functions
+* Common Table Expressions
+* Business Query Writing
+* Data Validation
+
+### Analytical Skills
+
+* Business Problem Solving
+* Trend Analysis
+* Time-Series Analysis
+* Ranking Analysis
+* Data Interpretation
+* Insight Generation
+
+### Professional Skills
+
+* Structured Problem Solving
 * Analytical Thinking
-* Problem Solving
-* Business-Oriented Data Processing
+* Attention to Detail
+* Data Quality Management
+* Documentation
+* Business Communication
 
 ---
 
-## 📌 Conclusion
+# 📈 Business Value
 
-This project demonstrates the complete data cleaning lifecycle using SQL, following practices commonly adopted by analytics teams in industry. The cleaned dataset is now ready for exploratory data analysis, dashboard development, and business reporting.
+High-quality analysis depends on high-quality data.
+
+By cleaning and analyzing the dataset, this project enables:
+
+* Reliable business reporting
+* Improved decision-making
+* Accurate trend analysis
+* Better dashboard development
+* Consistent analytical results
+* Increased confidence in business metrics
+
+---
+
+# 🚀 What This Project Demonstrates
+
+This repository reflects the complete workflow expected from a Data Analyst in a professional environment.
+
+It demonstrates the ability to:
+
+* Transform raw data into production-ready datasets
+* Apply SQL best practices
+* Solve real-world business problems
+* Write clean and maintainable SQL
+* Generate meaningful business insights
+* Communicate analytical findings effectively
+
+---
+
+
+# 👩‍💻 About Me
+
+**Aishwarya**
+
+Aspiring Data Analyst with a strong interest in transforming raw data into actionable business insights.
+
+### Skills
+
+* SQL
+* Python
+* Excel
+* Power BI
+* Data Cleaning
+* Exploratory Data Analysis
+* Data Visualization
+* Business Analytics
+
+I am actively building projects that reflect real-world analytics workflows and continuously expanding my knowledge of data analysis, visualization, and business intelligence.
+
+---
+
+## ⭐ If you found this project helpful, consider giving it a star!
